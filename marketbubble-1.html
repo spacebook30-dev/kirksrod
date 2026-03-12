@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MarketBubble — by Spacebuuk Media</title>
+<link rel="manifest" href="data:application/json,{%22name%22:%22MarketBubble%22,%22short_name%22:%22MarketBubble%22,%22description%22:%22Trading%20Made%20Simple%20by%20Spacebuuk%20Media%22,%22start_url%22:%22/%22,%22display%22:%22standalone%22,%22background_color%22:%22%230f0c29%22,%22theme_color%22:%22%236366f1%22,%22orientation%22:%22portrait%22,%22icons%22:[{%22src%22:%22data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20viewBox%3D'0%200%20100%20100'%3E%3Ccircle%20cx%3D'50'%20cy%3D'50'%20r%3D'50'%20fill%3D'%230f0c29'/%3E%3Cellipse%20cx%3D'46'%20cy%3D'46'%20rx%3D'30'%20ry%3D'30'%20fill%3D'%231a8fd1'/%3E%3Cellipse%20cx%3D'46'%20cy%3D'62'%20rx%3D'24'%20ry%3D'12'%20fill%3D'%237ed957'%20opacity%3D'.85'/%3E%3Crect%20x%3D'28'%20y%3D'46'%20width%3D'5'%20height%3D'12'%20rx%3D'1'%20fill%3D'%23e03030'/%3E%3Crect%20x%3D'36'%20y%3D'38'%20width%3D'5'%20height%3D'14'%20rx%3D'1'%20fill%3D'%2322c55e'/%3E%3Crect%20x%3D'44'%20y%3D'42'%20width%3D'5'%20height%3D'10'%20rx%3D'1'%20fill%3D'%23e03030'/%3E%3Crect%20x%3D'52'%20y%3D'32'%20width%3D'5'%20height%3D'16'%20rx%3D'1'%20fill%3D'%2322c55e'/%3E%3Crect%20x%3D'60'%20y%3D'26'%20width%3D'5'%20height%3D'18'%20rx%3D'1'%20fill%3D'%2322c55e'/%3E%3Cpolyline%20points%3D'26%2C56%2040%2C44%2052%2C50%2070%2C22'%20stroke%3D'%2322c55e'%20stroke-width%3D'3'%20fill%3D'none'%20stroke-linecap%3D'round'/%3E%3Cpolygon%20points%3D'70%2C22%2078%2C28%2068%2C32'%20fill%3D'%2322c55e'/%3E%3C/svg%3E%22,%22sizes%22:%22512x512%22,%22type%22:%22image/svg+xml%22,%22purpose%22:%22any%20maskable%22}]}">
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="MarketBubble"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#0f0c29"/>
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A//www.w3.org/2000/svg'%20viewBox%3D'0%200%20100%20100'%3E%3Ccircle%20cx%3D'50'%20cy%3D'50'%20r%3D'50'%20fill%3D'%230f0c29'/%3E%3Cellipse%20cx%3D'46'%20cy%3D'46'%20rx%3D'30'%20ry%3D'30'%20fill%3D'%231a8fd1'/%3E%3Cellipse%20cx%3D'46'%20cy%3D'62'%20rx%3D'24'%20ry%3D'12'%20fill%3D'%237ed957'%20opacity%3D'.85'/%3E%3Crect%20x%3D'28'%20y%3D'46'%20width%3D'5'%20height%3D'12'%20rx%3D'1'%20fill%3D'%23e03030'/%3E%3Crect%20x%3D'36'%20y%3D'38'%20width%3D'5'%20height%3D'14'%20rx%3D'1'%20fill%3D'%2322c55e'/%3E%3Cpolyline%20points%3D'26%2C56%2040%2C44%2052%2C50%2070%2C22'%20stroke%3D'%2322c55e'%20stroke-width%3D'3'%20fill%3D'none'%20stroke-linecap%3D'round'/%3E%3Cpolygon%20points%3D'70%2C22%2078%2C28%2068%2C32'%20fill%3D'%2322c55e'/%3E%3C/svg%3E"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f9fafb;color:#111}
+button,input,textarea,select{font-family:inherit}
+button{cursor:pointer}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+#auth{min-height:100vh;background:linear-gradient(135deg,#0f0c29,#302b63,#1a1a3e);display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden;position:relative}
+.bb{position:absolute;border-radius:50%;background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.12);pointer-events:none}
+.acard{background:rgba(255,255,255,.05);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);border-radius:22px;padding:40px 36px;max-width:410px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.5);animation:fadeIn .4s ease}
+.atabs{display:flex;background:rgba(255,255,255,.06);border-radius:12px;padding:4px;margin:20px 0 22px}
+.atab{flex:1;padding:9px;border:none;border-radius:9px;font-weight:700;font-size:13px;cursor:pointer;background:transparent;color:rgba(255,255,255,.4);transition:all .2s}
+.atab.on{background:#6366f1;color:#fff}
+.albl{font-size:10px;font-weight:600;color:rgba(255,255,255,.4);margin-bottom:6px;text-transform:uppercase;letter-spacing:.6px}
+.ainp{width:100%;padding:11px 13px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.14);border-radius:10px;color:#fff;font-size:14px;outline:none;margin-bottom:13px;transition:border-color .2s}
+.ainp:focus{border-color:#6366f1}
+.ainp::placeholder{color:rgba(255,255,255,.22)}
+.abtn{width:100%;padding:12px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;border:none;border-radius:11px;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px}
+.abtn:disabled{opacity:.5}
+.aerr{background:rgba(239,68,68,.14);border:1px solid rgba(239,68,68,.3);border-radius:9px;padding:8px 12px;margin-bottom:12px;font-size:12px;color:#fca5a5;display:none}
+.anote{margin-top:16px;padding:10px 13px;background:rgba(99,102,241,.1);border:1px solid rgba(99,102,241,.2);border-radius:9px;font-size:11px;color:rgba(255,255,255,.4);text-align:center;line-height:1.5}
+.afoot{margin-top:20px;padding-top:14px;border-top:1px solid rgba(255,255,255,.07);text-align:center;font-size:10px;color:rgba(255,255,255,.2)}
+.vbox{text-align:center;padding:10px 0 20px;display:none}
+#app{display:none;min-height:100vh;background:#f9fafb}
+
+/* ── HEADER: 3-column grid — logo LEFT | user CENTER | badge RIGHT ── */
+.hdr{
+  background:#fff;
+  border-bottom:1px solid #f0f0f0;
+  padding:0 16px;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  height:58px;
+  position:sticky;
+  top:0;
+  z-index:99;
+  box-shadow:0 1px 6px rgba(0,0,0,.04);
+}
+.hlogo{display:flex;align-items:center;gap:8px;justify-self:start}
+.hname{font-size:15px;font-weight:800;line-height:1}
+.hsub{font-size:9px;color:#9ca3af}
+.huser{display:flex;align-items:center;gap:7px;font-size:12px;color:#6b7280;justify-self:center}
+.probadge{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px}
+.soBtn{padding:4px 9px;background:#f3f4f6;border:none;border-radius:6px;font-size:11px;color:#6b7280;font-weight:600}
+
+/* Spacebuuk badge — wider/longer, on the right */
+.sbbadge{
+  display:flex;align-items:center;gap:7px;
+  background:linear-gradient(135deg,#0f0c29,#302b63);
+  border-radius:18px;
+  padding:6px 14px 6px 10px;
+  border:1px solid rgba(255,255,255,.15);
+  flex-shrink:0;
+}
+.hdr .sbbadge{justify-self:end}
+.sba{font-size:7px;color:rgba(255,255,255,.35);line-height:1}
+.sbn{font-size:11px;font-weight:700;color:#e9d8fd;letter-spacing:.4px;line-height:1.2}
+.sbm{font-size:7px;color:rgba(255,255,255,.3);line-height:1}
+
+.tabs{display:flex;background:#fff;border-bottom:1px solid #f0f0f0;padding:0 14px;overflow-x:auto}
+.t{padding:12px 13px;border:none;background:none;border-bottom:3px solid transparent;color:#6b7280;font-weight:500;font-size:12px;white-space:nowrap;display:flex;align-items:center;gap:3px;transition:all .15s}
+.t.on{color:#6366f1;border-bottom-color:#6366f1;font-weight:700}
+.tbadge{background:#ef4444;color:#fff;font-size:8px;font-weight:700;padding:1px 4px;border-radius:7px}
+.wrap{max-width:860px;margin:0 auto;padding:14px}
+.card{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 14px rgba(0,0,0,.05);margin-bottom:13px}
+.ctitle{font-size:14px;font-weight:600;margin-bottom:2px}
+.csub{font-size:11px;color:#9ca3af;margin-bottom:13px}
+.stage{position:relative;width:100%;height:280px;background:#f9fafb;border-radius:11px;overflow:hidden}
+.bbl{position:absolute;border-radius:50%;border-width:2.5px;border-style:solid;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.bbl:hover{transform:scale(1.07)}
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:13px}
+.scard{background:#fff;border-radius:11px;padding:11px 13px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.slbl{font-size:10px;color:#9ca3af;margin-bottom:2px}
+.sval{font-size:13px;font-weight:700}
+.stag{font-size:9px;font-weight:700;padding:2px 6px;border-radius:6px}
+.arow{background:rgba(255,255,255,.1);border-radius:10px;padding:10px 13px;display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.adot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+.srow{display:flex;align-items:center;gap:8px;padding:9px 11px;background:#f9fafb;border-radius:9px;margin-bottom:6px}
+.sdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.pill{padding:4px 11px;border-radius:18px;border-width:2px;border-style:solid;font-weight:600;font-size:11px;cursor:pointer;transition:all .15s}
+.tbox{background:#f8f7ff;border:1px dashed #6366f1;border-radius:8px;padding:8px 11px;font-size:11px;color:#6366f1;margin-top:9px}
+.tlink{background:none;border:none;color:#6366f1;font-weight:700;cursor:pointer;text-decoration:underline;font-size:11px;padding:0}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:11px;margin-bottom:18px}
+.pcard{background:#fff;border-radius:14px;padding:18px;box-shadow:0 2px 12px rgba(0,0,0,.05);border:2px solid transparent;position:relative}
+.pcard.pop{border-color:#6366f1;box-shadow:0 6px 24px rgba(99,102,241,.18)}
+.pbadge{position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#6366f1;color:#fff;font-size:9px;font-weight:700;padding:2px 11px;border-radius:9px;white-space:nowrap}
+.pfeat{display:flex;align-items:center;gap:5px;margin-bottom:5px;font-size:11px;color:#374151}
+.pbtn{margin-top:11px;width:100%;padding:9px;border-radius:8px;font-weight:700;font-size:12px;border:2px solid transparent}
+.foot{border-top:1px solid #f0f0f0;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;background:#fff;margin-top:14px}
+</style>
+</head>
+<body>
+
+<div id="auth">
+  <div class="bb" style="width:130px;height:130px;left:6%;top:10%;animation:float 18s ease-in-out infinite"></div>
+  <div class="bb" style="width:70px;height:70px;left:75%;top:68%;animation:float 13s ease-in-out infinite 1s"></div>
+  <div class="bb" style="width:150px;height:150px;left:33%;top:74%;animation:float 21s ease-in-out infinite 2s"></div>
+  <div class="bb" style="width:55px;height:55px;left:88%;top:15%;animation:float 15s ease-in-out infinite .4s"></div>
+  <div class="acard">
+    <div style="display:flex;align-items:center;justify-content:center;gap:11px;margin-bottom:8px">
+      <svg width="160" height="160" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="globe" cx="38%" cy="32%"><stop offset="0%" stop-color="#7ee8fa"/><stop offset="60%" stop-color="#1a8fd1"/><stop offset="100%" stop-color="#0a4fa6"/></radialGradient>
+          <radialGradient id="bottom" cx="50%" cy="40%"><stop offset="0%" stop-color="#7ed957"/><stop offset="100%" stop-color="#1a7a1a"/></radialGradient>
+          <radialGradient id="shine" cx="30%" cy="25%"><stop offset="0%" stop-color="rgba(255,255,255,0.9)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></radialGradient>
+        </defs>
+        <ellipse cx="46" cy="46" rx="34" ry="34" fill="url(#globe)"/>
+        <ellipse cx="46" cy="66" rx="28" ry="14" fill="url(#bottom)" opacity=".85"/>
+        <ellipse cx="36" cy="30" rx="14" ry="10" fill="url(#shine)" opacity=".7"/>
+        <path d="M18 60 Q46 80 74 60" stroke="#1a6db5" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <rect x="28" y="46" width="5" height="14" rx="1" fill="#e03030"/>
+        <line x1="30.5" y1="42" x2="30.5" y2="46" stroke="#e03030" stroke-width="1.5"/>
+        <line x1="30.5" y1="60" x2="30.5" y2="63" stroke="#e03030" stroke-width="1.5"/>
+        <rect x="36" y="38" width="5" height="16" rx="1" fill="#22c55e"/>
+        <line x1="38.5" y1="34" x2="38.5" y2="38" stroke="#22c55e" stroke-width="1.5"/>
+        <line x1="38.5" y1="54" x2="38.5" y2="57" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="44" y="42" width="5" height="12" rx="1" fill="#e03030"/>
+        <line x1="46.5" y1="38" x2="46.5" y2="42" stroke="#e03030" stroke-width="1.5"/>
+        <line x1="46.5" y1="54" x2="46.5" y2="57" stroke="#e03030" stroke-width="1.5"/>
+        <rect x="52" y="32" width="5" height="18" rx="1" fill="#22c55e"/>
+        <line x1="54.5" y1="27" x2="54.5" y2="32" stroke="#22c55e" stroke-width="1.5"/>
+        <line x1="54.5" y1="50" x2="54.5" y2="53" stroke="#22c55e" stroke-width="1.5"/>
+        <rect x="60" y="26" width="5" height="20" rx="1" fill="#22c55e"/>
+        <line x1="62.5" y1="22" x2="62.5" y2="26" stroke="#22c55e" stroke-width="1.5"/>
+        <line x1="62.5" y1="46" x2="62.5" y2="49" stroke="#22c55e" stroke-width="1.5"/>
+        <polyline points="26,58 40,44 52,50 70,22" stroke="#22c55e" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <polygon points="70,22 78,28 68,32" fill="#22c55e"/>
+        <path d="M82 14 L83.5 18 L87 19.5 L83.5 21 L82 25 L80.5 21 L77 19.5 L80.5 18 Z" fill="#00d4ff" opacity=".9"/>
+        <path d="M14 22 L15 25 L18 26 L15 27 L14 30 L13 27 L10 26 L13 25 Z" fill="#00d4ff" opacity=".8"/>
+        <path d="M88 40 L89 42.5 L91.5 43.5 L89 44.5 L88 47 L87 44.5 L84.5 43.5 L87 42.5 Z" fill="#aaff44" opacity=".8"/>
+        <path d="M10 50 L11 52 L13 53 L11 54 L10 56 L9 54 L7 53 L9 52 Z" fill="#aaff44" opacity=".7"/>
+      </svg>
+      <div><div style="font-size:22px;font-weight:900;color:#fff;letter-spacing:-.3px"><span style="color:#fff">Market</span><span style="color:#7ed957">Bubble</span></div><div style="font-size:11px;color:rgba(255,255,255,.4)">Trading Made Simple</div></div>
+    </div>
+    <div style="display:flex;justify-content:center;margin-bottom:4px">
+      <div class="sbbadge"><svg width="17" height="17" viewBox="0 0 22 22" fill="none"><rect x="4" y="3" width="10" height="16" rx="2" fill="#4a5568"/><rect x="5" y="4" width="8" height="14" rx="1" fill="#2d3748"/><line x1="6" y1="7" x2="12" y2="7" stroke="#718096" stroke-width=".8"/><line x1="6" y1="10" x2="12" y2="10" stroke="#718096" stroke-width=".8"/><line x1="6" y1="13" x2="12" y2="13" stroke="#718096" stroke-width=".8"/><ellipse cx="15" cy="8" rx="4" ry="1.5" stroke="#9f7aea" stroke-width="1" fill="none" transform="rotate(-20 15 8)"/><circle cx="15" cy="8" r="2" fill="#6b46c1"/></svg><div><div class="sba">A</div><div class="sbn">Spacebuuk Media</div><div class="sbm">Official App</div></div></div>
+    </div>
+    <div class="atabs">
+      <button class="atab on" id="tab-login" onclick="switchAuth('login')">🔑 Sign In</button>
+      <button class="atab" id="tab-signup" onclick="switchAuth('signup')">✨ Sign Up</button>
+    </div>
+    <div id="aform">
+      <div class="albl">Email Address</div>
+      <input class="ainp" id="aemail" type="email" placeholder="you@example.com"/>
+      <div class="albl">Password</div>
+      <input class="ainp" id="apass" type="password" placeholder="Enter your password" onkeydown="if(event.key==='Enter')doAuth()"/>
+      <div id="forgot-row" style="text-align:right;margin:-4px 0 16px">
+        <button style="background:none;border:none;color:#a5b4fc;font-size:12px;font-weight:600;cursor:pointer" onclick="alert('Password reset sent! (demo)')">Forgot password?</button>
+      </div>
+      <div class="aerr" id="aerr"></div>
+      <button class="abtn" id="abtn" onclick="doAuth()">🚀 Sign In to MarketBubble</button>
+      <div class="anote">🌐 Deployed on Netlify — free forever at yourname.netlify.app</div>
+    </div>
+    <div class="vbox" id="vbox">
+      <div style="font-size:44px;margin-bottom:12px">📧</div>
+      <div style="font-size:17px;font-weight:700;color:#fff;margin-bottom:7px">Check your email!</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.5);line-height:1.7">Confirmation sent to<br><strong style="color:#a5b4fc" id="vemail"></strong><br>Click the link to activate.</div>
+      <button onclick="switchAuth('login')" style="margin-top:18px;padding:8px 22px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff;border-radius:9px;font-weight:600;font-size:12px">Back to Sign In</button>
+    </div>
+    <div class="afoot">© 2026 MarketBubble · A Spacebuuk Media App</div>
+  </div>
+</div>
+
+<div id="app">
+  <!-- HEADER: MarketBubble logo LEFT · user info CENTER · Spacebuuk badge RIGHT (wider) -->
+  <div class="hdr">
+    <div class="hlogo">
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none"><defs><radialGradient id="hg" cx="38%" cy="32%"><stop offset="0%" stop-color="#7ee8fa"/><stop offset="60%" stop-color="#1a8fd1"/><stop offset="100%" stop-color="#0a4fa6"/></radialGradient></defs><ellipse cx="46" cy="46" rx="34" ry="34" fill="url(#hg)"/><ellipse cx="46" cy="66" rx="28" ry="14" fill="#7ed957" opacity=".85"/><ellipse cx="36" cy="30" rx="14" ry="10" fill="rgba(255,255,255,0.6)"/><path d="M18 60 Q46 80 74 60" stroke="#1a6db5" stroke-width="4" fill="none" stroke-linecap="round"/><rect x="28" y="46" width="5" height="14" rx="1" fill="#e03030"/><rect x="36" y="38" width="5" height="16" rx="1" fill="#22c55e"/><rect x="44" y="42" width="5" height="12" rx="1" fill="#e03030"/><rect x="52" y="32" width="5" height="18" rx="1" fill="#22c55e"/><rect x="60" y="26" width="5" height="20" rx="1" fill="#22c55e"/><polyline points="26,58 40,44 52,50 70,22" stroke="#22c55e" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><polygon points="70,22 78,28 68,32" fill="#22c55e"/></svg>
+      <div><div class="hname"><span style="color:#1a6db5">Market</span><span style="color:#22c55e">Bubble</span></div><div class="hsub">Trading Made Simple</div></div>
+    </div>
+    <div class="huser">
+      <span class="probadge" id="probadge" style="display:none">PRO</span>
+      👋 <strong style="color:#6366f1" id="uname">Trader</strong>
+      <button class="soBtn" onclick="signOut()">Sign Out</button>
+    </div>
+    <div class="sbbadge">
+      <svg width="20" height="20" viewBox="0 0 22 22" fill="none"><rect x="4" y="3" width="10" height="16" rx="2" fill="#4a5568"/><rect x="5" y="4" width="8" height="14" rx="1" fill="#2d3748"/><line x1="6" y1="7" x2="12" y2="7" stroke="#718096" stroke-width=".8"/><line x1="6" y1="10" x2="12" y2="10" stroke="#718096" stroke-width=".8"/><line x1="6" y1="13" x2="12" y2="13" stroke="#718096" stroke-width=".8"/><ellipse cx="15" cy="8" rx="4" ry="1.5" stroke="#9f7aea" stroke-width="1" fill="none" transform="rotate(-20 15 8)"/><circle cx="15" cy="8" r="2" fill="#6b46c1"/></svg>
+      <div>
+        <div class="sba">A</div>
+        <div class="sbn">Spacebuuk Media</div>
+        <div class="sbm">Official App</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="t on" onclick="goTab('market')">📊 Market</button>
+    <button class="t" onclick="goTab('signals')">💰 Signals <span class="tbadge">4</span></button>
+    <button class="t" onclick="goTab('charts')">📈 Charts</button>
+    <button class="t" onclick="goTab('ai')">🤖 AI Guide</button>
+    <button class="t" onclick="goTab('pricing')">💳 Plans</button>
+  </div>
+
+  <div id="install-btn" onclick="installApp()" style="display:none;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#6366f1,#8b5cf6);padding:10px 18px;cursor:pointer;gap:10px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <span style="font-size:22px">📲</span>
+      <div><div style="font-size:13px;font-weight:700;color:#fff">Install MarketBubble</div><div style="font-size:11px;color:rgba(255,255,255,.7)">Add to your home screen — works like a real app!</div></div>
+    </div>
+    <button onclick="event.stopPropagation();document.getElementById('install-btn').style.display='none'" style="background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:20px;padding:4px 10px;font-size:12px;cursor:pointer">✕</button>
+  </div>
+
+  <div class="wrap">
+    <div id="p-market">
+      <div class="card"><div class="ctitle">Today's Market</div><div class="csub">Tap a bubble to see its signal.</div><div class="stage" id="stage"></div></div>
+      <div id="bdetail" style="display:none" class="card"></div>
+      <div class="sgrid">
+        <div class="scard"><div class="slbl">Top Gainer</div><div class="sval" style="color:#10b981">Crypto +7.4%</div></div>
+        <div class="scard"><div class="slbl">Biggest Drop</div><div class="sval" style="color:#ef4444">Energy -2.1%</div></div>
+        <div class="scard"><div class="slbl">BUY Signals</div><div class="sval" style="color:#6366f1">4 Sectors</div></div>
+      </div>
+    </div>
+
+    <div id="p-signals" style="display:none">
+      <div style="background:linear-gradient(135deg,#064e3b,#065f46);border-radius:14px;padding:18px;margin-bottom:13px;color:#fff">
+        <div style="font-size:14px;font-weight:700;margin-bottom:2px">🔔 Live Opportunity Alerts</div>
+        <div style="font-size:11px;opacity:.8;margin-bottom:11px">Sectors showing BUY signals right now</div>
+        <div id="oalerts"></div>
+        <div id="olock" style="display:none;margin-top:9px"><button onclick="goTab('pricing')" style="width:100%;padding:7px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:8px;font-weight:600;font-size:12px">🔒 Unlock all alerts with Pro →</button></div>
+      </div>
+      <div style="background:linear-gradient(135deg,#7f1d1d,#991b1b);border-radius:14px;padding:18px;margin-bottom:13px;color:#fff">
+        <div style="font-size:14px;font-weight:700;margin-bottom:2px">⚠️ Risk Warnings</div>
+        <div style="font-size:11px;opacity:.8;margin-bottom:11px">Sectors flashing caution</div>
+        <div id="walerts"></div>
+      </div>
+      <div class="card"><div class="ctitle">📊 All Sector Signals</div><div class="csub">Free: preview · Pro: full reasoning</div><div id="allsig"></div></div>
+      <div style="background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.05)">
+        <div style="background:linear-gradient(135deg,#1a1a2e,#16213e);padding:13px 16px;display:flex;align-items:center;justify-content:space-between">
+          <div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:1px">💡 AI Trade Suggestions</div><div style="font-size:10px;color:rgba(255,255,255,.4)">Personalized · Pro only</div></div>
+          <button id="suggbtn" onclick="getSugg()" style="padding:7px 13px;background:#6366f1;color:#fff;border:none;border-radius:8px;font-weight:700;font-size:12px">Get Suggestions 💡</button>
+        </div>
+        <div style="padding:16px" id="suggarea">
+          <div id="suggteaser"><div style="font-size:12px;color:#6b7280;line-height:1.6"><strong>Teaser:</strong> <span style="color:#10b981;font-weight:600">Energy &amp; Health</span> show buy signals near oversold levels. <span style="color:#ef4444;font-weight:600">Crypto</span> is flashing a sell warning after a big run.</div><div class="tbox">🔒 Unlock full AI suggestions. <button class="tlink" onclick="goTab('pricing')">Go Pro →</button></div></div>
+          <div id="suggload" style="display:none;font-size:12px;color:#9ca3af">Analyzing all sectors…</div>
+          <div id="suggresult" style="display:none;font-size:12px;color:#374151;line-height:1.8;white-space:pre-wrap"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="p-charts" style="display:none">
+      <div class="card"><div class="ctitle">Select Sectors</div><div id="spills" style="display:flex;flex-wrap:wrap;gap:7px;margin-top:9px"></div></div>
+      <div class="card"><div class="ctitle">📈 7-Day Performance</div><div class="csub">Simulated trend data</div><svg id="mchart" viewBox="0 0 500 190" style="width:100%;height:190px;overflow:visible"></svg><div id="clegend" style="display:flex;flex-wrap:wrap;gap:9px;margin-top:7px"></div></div>
+      <div id="sparkgrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:9px"></div>
+    </div>
+
+    <div id="p-ai" style="display:none">
+      <div style="background:#fff;border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.05);overflow:hidden;display:flex;flex-direction:column;height:500px">
+        <div style="padding:11px 15px;border-bottom:1px solid #f0f0f0"><div style="font-size:13px;font-weight:600">🤖 AI Trading Guide</div><div style="font-size:10px;color:#9ca3af">No question is too basic</div></div>
+        <div id="chatmsgs" style="flex:1;overflow-y:auto;padding:13px;display:flex;flex-direction:column;gap:9px"></div>
+        <div style="padding:9px 11px;border-top:2px solid #e5e7eb;display:flex;flex-direction:column;gap:6px">
+          <textarea id="chatinp" rows="2" placeholder="Ask anything — e.g. What does a BUY signal mean?" style="width:100%;padding:9px 11px;border:2px solid #6366f1;border-radius:8px;font-size:12px;outline:none;resize:none;box-sizing:border-box" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}"></textarea>
+          <button onclick="sendChat()" style="width:100%;padding:10px;background:#6366f1;color:#fff;border:none;border-radius:8px;font-weight:700;font-size:13px" id="chatbtn">🚀 Send to MarketBubble AI</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="p-pricing" style="display:none">
+      <div style="text-align:center;margin-bottom:18px"><div style="font-size:19px;font-weight:800;margin-bottom:4px">💳 Choose Your Plan</div><div style="font-size:12px;color:#6b7280">Start free. Upgrade anytime.</div></div>
+      <div class="pgrid" id="pgrid"></div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <div style="font-size:10px;color:#9ca3af">© 2026 MarketBubble · Educational use only, not financial advice.</div>
+    <div class="sbbadge"><svg width="17" height="17" viewBox="0 0 22 22" fill="none"><rect x="4" y="3" width="10" height="16" rx="2" fill="#4a5568"/><rect x="5" y="4" width="8" height="14" rx="1" fill="#2d3748"/><line x1="6" y1="7" x2="12" y2="7" stroke="#718096" stroke-width=".8"/><ellipse cx="15" cy="8" rx="4" ry="1.5" stroke="#9f7aea" stroke-width="1" fill="none" transform="rotate(-20 15 8)"/><circle cx="15" cy="8" r="2" fill="#6b46c1"/></svg><div><div class="sba">A</div><div class="sbn">Spacebuuk Media</div><div class="sbm">Official App</div></div></div>
+  </div>
+</div>
+
+<script>
+// Service worker skipped — not needed for Netlify deployment
+let installPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();installPrompt=e;const btn=document.getElementById('install-btn');if(btn)btn.style.display='flex';});
+window.addEventListener('appinstalled',()=>{const btn=document.getElementById('install-btn');if(btn)btn.style.display='none';});
+function installApp(){if(installPrompt){installPrompt.prompt();installPrompt.userChoice.then(()=>{installPrompt=null;});}}
+
+const B=[
+  {id:1,label:"Tech",    change:4.2,  size:98, color:"#6366f1",x:15,y:16,signal:"HOLD",at:"caution",    news:"Strong earnings but stretched valuation."},
+  {id:2,label:"Energy",  change:-2.1, size:74, color:"#f59e0b",x:40,y:9, signal:"BUY", at:"opportunity",news:"Oil surplus may reverse — watch for bounce."},
+  {id:3,label:"Health",  change:1.8,  size:83, color:"#10b981",x:62,y:19,signal:"BUY", at:"opportunity",news:"Drug approvals lifting the sector."},
+  {id:4,label:"Finance", change:-0.5, size:88, color:"#3b82f6",x:24,y:49,signal:"HOLD",at:"neutral",    news:"Awaiting rate decision — no clear move."},
+  {id:5,label:"Retail",  change:3.1,  size:63, color:"#ec4899",x:52,y:52,signal:"BUY", at:"opportunity",news:"Consumer spending beat expectations."},
+  {id:6,label:"Crypto",  change:7.4,  size:86, color:"#8b5cf6",x:72,y:44,signal:"SELL",at:"warning",    news:"Overbought — correction likely soon."},
+  {id:7,label:"Food",    change:-1.2, size:58, color:"#f97316",x:9, y:64,signal:"HOLD",at:"caution",    news:"Costs rising — wait for direction."},
+  {id:8,label:"Travel",  change:2.5,  size:68, color:"#14b8a6",x:39,y:69,signal:"BUY", at:"opportunity",news:"Summer season driving recovery."},
+];
+const SM={BUY:{c:"#10b981",bg:"#dcfce7",i:"🟢"},HOLD:{c:"#f59e0b",bg:"#fef9c3",i:"🟡"},SELL:{c:"#ef4444",bg:"#fee2e2",i:"🔴"}};
+const AM={opportunity:{c:"#10b981",bg:"#dcfce7",i:"💰",l:"Opportunity"},warning:{c:"#ef4444",bg:"#fee2e2",i:"⚠️",l:"Warning"},caution:{c:"#f59e0b",bg:"#fef9c3",i:"⏳",l:"Caution"},neutral:{c:"#6b7280",bg:"#f3f4f6",i:"➖",l:"Neutral"}};
+const PLANS=[
+  {id:"free",    n:"Free",     p:"$0",  per:"forever",  color:"#6b7280",pop:false,f:["Market Bubbles view","Signal preview","3 AI questions/day","1 Alert/day"]},
+  {id:"pro",     n:"Pro",      p:"$12", per:"/month",   color:"#6366f1",pop:true, f:["Full AI Trade Suggestions","Unlimited Alerts","All signals + reasoning","Unlimited AI Guide","Ad-free"]},
+  {id:"business",n:"Business", p:"$49", per:"/month",   color:"#8b5cf6",pop:false,f:["Everything in Pro","White-label API","10 team seats","B2B dashboard"]},
+];
+const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Today"];
+let user=null,plan="free",authMode="login",selB=null,activeSec=["Tech","Crypto","Health"],chatHist=[{role:"assistant",content:"Hey! 👋 I'm your MarketBubble guide. Ask me anything — no question is too basic!"}],suggDone=false;
+const SD={};B.forEach(b=>{let v=100;SD[b.label]=DAYS.map(()=>{v+=(Math.random()-.46)*(3+Math.abs(b.change));return parseFloat(v.toFixed(2));});});
+
+function switchAuth(m){authMode=m;document.getElementById("tab-login").className="atab"+(m==="login"?" on":"");document.getElementById("tab-signup").className="atab"+(m==="signup"?" on":"");document.getElementById("forgot-row").style.display=m==="login"?"block":"none";document.getElementById("abtn").textContent=m==="login"?"🚀 Sign In to MarketBubble":"✨ Create My Account";document.getElementById("apass").placeholder=m==="signup"?"Min. 6 characters":"Enter your password";document.getElementById("aerr").style.display="none";document.getElementById("aform").style.display="block";document.getElementById("vbox").style.display="none";}
+function doAuth(){const em=document.getElementById("aemail").value.trim();const pw=document.getElementById("apass").value;const err=document.getElementById("aerr");if(!em||!pw){err.textContent="Please fill in both fields.";err.style.display="block";return;}if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){err.textContent="Enter a valid email address.";err.style.display="block";return;}if(pw.length<6){err.textContent="Password must be at least 6 characters.";err.style.display="block";return;}const btn=document.getElementById("abtn");btn.disabled=true;btn.textContent="Processing…";setTimeout(()=>{btn.disabled=false;btn.textContent=authMode==="login"?"🚀 Sign In to MarketBubble":"✨ Create My Account";if(authMode==="signup"){document.getElementById("vemail").textContent=em;document.getElementById("aform").style.display="none";document.getElementById("vbox").style.display="block";}else{user={name:em.split("@")[0],email:em};document.getElementById("auth").style.display="none";document.getElementById("app").style.display="block";document.getElementById("uname").textContent=user.name;initApp();}},800);}
+function signOut(){user=null;plan="free";document.getElementById("app").style.display="none";document.getElementById("auth").style.display="flex";document.getElementById("aemail").value="";document.getElementById("apass").value="";}
+function goTab(t){["market","signals","charts","ai","pricing"].forEach(id=>{document.getElementById("p-"+id).style.display=id===t?"block":"none";});document.querySelectorAll(".t").forEach((el,i)=>{el.className="t"+(["market","signals","charts","ai","pricing"][i]===t?" on":"");});if(t==="charts")drawCharts();if(t==="signals")drawSignals();if(t==="pricing")drawPlans();}
+function initApp(){drawBubbles();drawSignals();drawPlans();renderChat();drawCharts();}
+function drawBubbles(){const st=document.getElementById("stage");st.innerHTML="";B.forEach(b=>{const up=b.change>=0;const sm=SM[b.signal];const btn=document.createElement("button");btn.className="bbl";btn.style.cssText=`left:calc(${b.x}% - ${b.size/2}px);top:calc(${b.y}% - ${b.size/2}px);width:${b.size}px;height:${b.size}px;background:${up?b.color+"22":"#fef2f222"};border-color:${up?b.color:"#ef4444"}`;btn.innerHTML=`<span style="font-size:${b.size>80?11:9}px;font-weight:700;color:#111">${b.label}</span><span style="font-size:${b.size>80?10:8}px;color:${up?"#10b981":"#ef4444"};font-weight:600">${up?"▲":"▼"}${Math.abs(b.change)}%</span><span style="font-size:10px">${sm.i}</span>`;btn.onclick=()=>showDetail(b);st.appendChild(btn);});}
+function showDetail(b){selB=b;const sm=SM[b.signal];const am=AM[b.at];const pro=plan==="pro"||plan==="business";const d=document.getElementById("bdetail");d.style.display="block";d.style.borderLeft=`4px solid ${b.color}`;d.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;flex-wrap:wrap;gap:5px"><div style="font-size:15px;font-weight:700">${b.label} <span style="font-size:12px;color:${b.change>=0?"#10b981":"#ef4444"}">${b.change>=0?"▲":"▼"}${Math.abs(b.change)}%</span></div><div style="display:flex;gap:5px"><span style="background:${sm.bg};color:${sm.c};font-size:10px;font-weight:700;padding:3px 7px;border-radius:6px">${sm.i} ${b.signal}</span><span style="background:${am.bg};color:${am.c};font-size:10px;font-weight:700;padding:3px 7px;border-radius:6px">${am.i} ${am.l}</span></div></div><div style="font-size:12px;color:#6b7280;line-height:1.6;margin-bottom:10px">${b.news}</div>${!pro?`<div class="tbox">🔒 <strong>Pro insight locked</strong> — full reasoning &amp; AI suggestions. <button class="tlink" onclick="goTab('pricing')">Upgrade →</button></div>`:""}<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px"><button onclick="goTab('signals')" style="padding:5px 11px;background:#dcfce7;color:#16a34a;border:none;border-radius:6px;font-weight:600;font-size:11px">💰 All Signals →</button><button onclick="goTab('ai');document.getElementById('chatinp').value='Explain the ${b.label} ${b.signal} signal simply'" style="padding:5px 11px;background:#eef2ff;color:#6366f1;border:none;border-radius:6px;font-weight:600;font-size:11px">Ask AI →</button></div>`;}
+function drawSignals(){const pro=plan==="pro"||plan==="business";const opps=B.filter(b=>b.at==="opportunity");const warns=B.filter(b=>b.at==="warning");const oa=document.getElementById("oalerts");oa.innerHTML="";opps.forEach((b,i)=>{const locked=!pro&&i>0;oa.innerHTML+=`<div class="arow" style="filter:${locked?"blur(3px)":"none"};user-select:${locked?"none":"auto"}"><div style="display:flex;align-items:center;gap:8px"><div class="adot" style="background:${b.color}">${b.label[0]}</div><div><div style="font-size:12px;font-weight:700">${b.label} — Entry Point</div><div style="font-size:10px;color:rgba(255,255,255,.6)">${b.news}</div></div></div><span class="stag" style="background:#dcfce7;color:#16a34a;white-space:nowrap">🟢 BUY</span></div>`;});document.getElementById("olock").style.display=!pro?"block":"none";const wa=document.getElementById("walerts");wa.innerHTML="";warns.forEach(b=>{wa.innerHTML+=`<div class="arow"><div><div style="font-size:12px;font-weight:700">${b.label} — Overbought</div><div style="font-size:10px;color:rgba(255,255,255,.6)">${b.news}</div></div><span class="stag" style="background:#fee2e2;color:#ef4444;white-space:nowrap">🔴 SELL</span></div>`;});const as=document.getElementById("allsig");as.innerHTML="";B.forEach((b,i)=>{const sm=SM[b.signal];const am=AM[b.at];const hidden=!pro&&i>=3;as.innerHTML+=`<div class="srow" style="border:1px solid ${b.color}22"><div class="sdot" style="background:${b.color}"></div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700">${b.label}</div><div style="font-size:10px;color:#9ca3af">${hidden?"🔒 Full reasoning — Pro only":b.news}</div></div><div style="display:flex;gap:4px;align-items:center;flex-shrink:0"><span style="background:${sm.bg};color:${sm.c};font-size:9px;font-weight:700;padding:2px 6px;border-radius:5px">${sm.i}${b.signal}</span><span style="font-size:10px;font-weight:600;color:${b.change>=0?"#10b981":"#ef4444"};min-width:34px;text-align:right">${b.change>=0?"+":""}${b.change}%</span></div></div>`;});const pro2=plan==="pro"||plan==="business";document.getElementById("suggbtn").style.background=pro2?"#6366f1":"rgba(100,100,100,.3)";document.getElementById("suggbtn").textContent=pro2?"Get Suggestions 💡":"🔒 Pro Only";}
+function drawCharts(){const pills=document.getElementById("spills");pills.innerHTML="";B.forEach(b=>{const a=activeSec.includes(b.label);const p=document.createElement("button");p.className="pill";p.style.borderColor=a?b.color:"#e5e7eb";p.style.background=a?b.color+"18":"#fff";p.style.color=a?b.color:"#9ca3af";p.textContent=b.label;p.onclick=()=>{activeSec=a?activeSec.filter(s=>s!==b.label):[...activeSec,b.label];drawCharts();};pills.appendChild(p);});const svg=document.getElementById("mchart");svg.innerHTML="";const W=500,H=190,PL=28,PR=8,PT=8,PB=20,iW=W-PL-PR,iH=H-PT-PB;for(let i=0;i<=4;i++){const y=PT+i*(iH/4);const ln=document.createElementNS("http://www.w3.org/2000/svg","line");ln.setAttribute("x1",PL);ln.setAttribute("x2",W-PR);ln.setAttribute("y1",y);ln.setAttribute("y2",y);ln.setAttribute("stroke","#f0f0f0");ln.setAttribute("stroke-width","1");svg.appendChild(ln);}DAYS.forEach((d,i)=>{const x=PL+(i/(DAYS.length-1))*iW;const t=document.createElementNS("http://www.w3.org/2000/svg","text");t.setAttribute("x",x);t.setAttribute("y",H-3);t.setAttribute("font-size","9");t.setAttribute("fill","#9ca3af");t.setAttribute("text-anchor","middle");t.textContent=d;svg.appendChild(t);});if(activeSec.length){const allV=activeSec.flatMap(s=>SD[s]||[]);const mn=Math.min(...allV),mx=Math.max(...allV),rng=mx-mn||1;activeSec.forEach(s=>{const b=B.find(x=>x.label===s);if(!b)return;const pts=SD[s].map((v,i)=>`${PL+(i/(DAYS.length-1))*iW},${PT+((mx-v)/rng)*iH}`).join(" ");const pl=document.createElementNS("http://www.w3.org/2000/svg","polyline");pl.setAttribute("points",pts);pl.setAttribute("fill","none");pl.setAttribute("stroke",b.color);pl.setAttribute("stroke-width","2.5");pl.setAttribute("stroke-linecap","round");pl.setAttribute("stroke-linejoin","round");svg.appendChild(pl);});}else{const t=document.createElementNS("http://www.w3.org/2000/svg","text");t.setAttribute("x",W/2);t.setAttribute("y",H/2);t.setAttribute("font-size","12");t.setAttribute("fill","#9ca3af");t.setAttribute("text-anchor","middle");t.textContent="Select a sector above";svg.appendChild(t);}const leg=document.getElementById("clegend");leg.innerHTML="";activeSec.forEach(s=>{const b=B.find(x=>x.label===s);if(!b)return;leg.innerHTML+=`<span style="display:flex;align-items:center;gap:4px;font-size:11px;color:#374151"><span style="width:11px;height:3px;background:${b.color};display:inline-block;border-radius:2px"></span>${s}</span>`;});const grid=document.getElementById("sparkgrid");grid.innerHTML="";B.forEach(b=>{const sm=SM[b.signal];const W2=200,H2=42;const mn=Math.min(...SD[b.label]),mx=Math.max(...SD[b.label]),rng=mx-mn||1;const pts=SD[b.label].map((v,i)=>`${(i/(SD[b.label].length-1))*W2},${4+((mx-v)/rng)*(H2-8)}`).join(" ");const c=document.createElement("div");c.style.cssText=`background:#fff;border-radius:11px;padding:11px;box-shadow:0 2px 9px rgba(0,0,0,.04);border:1px solid ${b.color}22`;c.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px"><div style="font-size:12px;font-weight:700">${b.label}</div><span style="background:${sm.bg};color:${sm.c};font-size:9px;font-weight:700;padding:2px 5px;border-radius:5px">${sm.i}${b.signal}</span></div><svg viewBox="0 0 ${W2} ${H2}" style="width:100%;height:42px;display:block"><defs><linearGradient id="sg${b.id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${b.color}" stop-opacity=".2"/><stop offset="100%" stop-color="${b.color}" stop-opacity="0"/></linearGradient></defs><polygon points="0,${H2} ${pts} ${W2},${H2}" fill="url(#sg${b.id})"/><polyline points="${pts}" fill="none" stroke="${b.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><div style="font-size:11px;font-weight:600;color:${b.change>=0?"#10b981":"#ef4444"};margin-top:3px">${b.change>=0?"▲":"▼"} ${Math.abs(b.change)}% today</div>`;grid.appendChild(c);});}
+function renderChat(){const msgs=document.getElementById("chatmsgs");msgs.innerHTML="";chatHist.forEach(m=>{const w=document.createElement("div");w.style.cssText=`display:flex;justify-content:${m.role==="user"?"flex-end":"flex-start"}`;const b=document.createElement("div");b.style.cssText=`max-width:78%;padding:8px 11px;border-radius:${m.role==="user"?"13px 13px 4px 13px":"13px 13px 13px 4px"};background:${m.role==="user"?"#6366f1":"#f3f4f6"};color:${m.role==="user"?"#fff":"#111"};font-size:12px;line-height:1.6`;b.textContent=m.content;w.appendChild(b);msgs.appendChild(w);});msgs.scrollTop=msgs.scrollHeight;}
+async function sendChat(){const inp=document.getElementById("chatinp");const text=inp.value.trim();if(!text)return;chatHist.push({role:"user",content:text});inp.value="";renderChat();const btn=document.getElementById("chatbtn");btn.textContent="Thinking…";btn.disabled=true;const msgs=document.getElementById("chatmsgs");const th=document.createElement("div");th.style.display="flex";th.innerHTML=`<div style="background:#f3f4f6;border-radius:13px 13px 13px 4px;padding:8px 11px;font-size:12px;color:#9ca3af">Thinking…</div>`;msgs.appendChild(th);msgs.scrollTop=msgs.scrollHeight;try{const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:800,system:`You are MarketBubble's friendly trading guide for ${user&&user.name||"a beginner"}. Short, plain English, encouraging.`,messages:chatHist.map(m=>({role:m.role,content:m.content}))})});const d=await r.json();const rep=d.content&&d.content[0]&&d.content[0].text||"Let me think on that!";chatHist.push({role:"assistant",content:rep});}catch{chatHist.push({role:"assistant",content:"AI needs an API key configured on your server. All other features work without it!"});}btn.textContent="🚀 Send to MarketBubble AI";btn.disabled=false;renderChat();}
+async function getSugg(){const pro=plan==="pro"||plan==="business";if(!pro){goTab("pricing");return;}if(suggDone)return;suggDone=true;document.getElementById("suggbtn").textContent="Loading…";document.getElementById("suggbtn").disabled=true;document.getElementById("suggteaser").style.display="none";document.getElementById("suggload").style.display="block";const d=B.map(b=>`${b.label}: ${b.change>0?"+":""}${b.change}%, signal: ${b.signal}, news: ${b.news}`).join("\n");try{const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,system:"Beginner-friendly market analyst. Give 3 plain-English trade suggestions: sector, opportunity, why now, risk. End with educational disclaimer.",messages:[{role:"user",content:`Market data:\n${d}\n\nGive 3 trade suggestions.`}]})});const data=await r.json();document.getElementById("suggresult").textContent=data.content&&data.content[0]&&data.content[0].text||"No suggestions available.";document.getElementById("suggresult").style.display="block";}catch{document.getElementById("suggresult").textContent="AI needs an API key configured. All other features work fine!";document.getElementById("suggresult").style.display="block";}document.getElementById("suggload").style.display="none";document.getElementById("suggbtn").style.display="none";}
+function drawPlans(){const grid=document.getElementById("pgrid");grid.innerHTML="";PLANS.forEach(p=>{const active=plan===p.id;const card=document.createElement("div");card.className="pcard"+(p.pop?" pop":"");const feats=p.f.map(f=>`<div class="pfeat"><span style="color:#10b981;font-weight:700">✓</span>${f}</div>`).join("");const btnBg=active?"background:#f0fdf4;color:#16a34a;border-color:#16a34a":p.pop?`background:${p.color};color:#fff`:"background:#f3f4f6;color:#374151";card.innerHTML=`${p.pop?'<div class="pbadge">MOST POPULAR</div>':""}<div style="font-size:14px;font-weight:700;color:${p.color};margin-bottom:2px">${p.n}</div><div style="font-size:23px;font-weight:800;margin-bottom:1px">${p.p}<span style="font-size:11px;font-weight:500;color:#9ca3af">${p.per}</span></div><div style="margin:11px 0;border-top:1px solid #f0f0f0"></div>${feats}<button class="pbtn" style="${btnBg}" onclick="selectPlan('${p.id}')">${active?"✅ Current Plan":p.id==="free"?"Get Started":p.id==="pro"?"Upgrade to Pro ✨":"Start Business Trial"}</button>`;grid.appendChild(card);});}
+function selectPlan(id){plan=id;const pro=id==="pro"||id==="business";document.getElementById("probadge").style.display=pro?"inline":"none";drawPlans();drawSignals();}
+</script>
+</body>
+</html>
